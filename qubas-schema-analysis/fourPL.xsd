@@ -1,0 +1,1770 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:ct="tnsCommonTypes"
+            targetNamespace="tnsFourPL"
+            xmlns:fourPL="tnsFourPL"
+            attributeFormDefault="unqualified"
+            elementFormDefault="unqualified">
+  <xs:import namespace="tnsCommonTypes" schemaLocation="commonTypes.xsd"/>
+
+<xs:complexType name="controlWellCriteria">
+    <xs:sequence>
+      <xs:element name="meanOfGroup" type="ct:suitabilityCriteriaRange">
+        <xs:annotation><xs:appinfo><UI>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-MeanOfGroup")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-MeanOfGroup")</description>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="geometricMean" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+        <xs:annotation><xs:appinfo><UI>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-GeometricMean")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-GeometricMean")</description>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="controlWellSampleCriteria">
+    <xs:complexContent>
+      <xs:extension base="fourPL:controlWellCriteria">
+        <xs:attribute name="sampleLine" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="suitabilityCriteriaFourPL">
+    <xs:sequence>
+      <xs:element name="systemSuitability">
+        <xs:annotation><xs:appinfo><UI>
+                <widget>div</widget>
+                <state>SystemSuitability</state>
+        </UI></xs:appinfo></xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="controlWells">
+              <xs:annotation><xs:appinfo><UI>
+                      <widget>tabgroup</widget>
+                      <heading>Control Wells</heading>
+              </UI></xs:appinfo></xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="common" type="fourPL:controlWellCriteria">
+                    <xs:annotation><xs:appinfo><UI>
+                          <widget>tabgroup</widget>
+                          <label>Default tests</label>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="sample" minOccurs="0" maxOccurs="unbounded" type="fourPL:controlWellSampleCriteria">
+                    <xs:annotation><xs:appinfo><UI>
+                          <widget>tabgroup</widget>
+                          <label>Sample specific tests</label>
+                          <idattr>sampleLine</idattr>
+                          <idsfrom>CWSampleNames</idsfrom>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="reference">
+              <xs:annotation><xs:appinfo><UI>
+                    <widget>tabgroup</widget>
+                    <heading>Reference</heading>
+                    <virtual>
+                      <item name="ran"><sortid>3</sortid><widget>tabgroup</widget><label>Allowed ranges for parameters</label></item>
+                      <item name="eq"><sortid>4</sortid><widget>tabgroup</widget><label>Equivalence tests for parameters</label></item>
+                    </virtual>
+              </UI></xs:appinfo></xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="goodnessOfFit" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaSignificanceLevelType">
+                    <xs:annotation><xs:appinfo><UI>
+                          <state>default:0.01</state>
+                          <sortid>2</sortid>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-GoodnessOfFit")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-GoodnessOfFit4PL")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="significanceOfDoseResponse" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaSignificanceLevelType">
+                    <xs:annotation><xs:appinfo><UI>
+                          <state>default:0.01</state>
+                          <sortid>1</sortid>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-SignificanceOfDoseResponse")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-significanceOfDoseResponse")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForA" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-RangeForA")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForA")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForB" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-RangeForB")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForB")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForC" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-RangeForC")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForC")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForD" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-RangeForD")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForD")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="range" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-Range")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-range")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForA" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-ConfidenceIntervalForA")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForA")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForB" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-ConfidenceIntervalForB")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForB")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForC" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-ConfidenceIntervalForC")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForC")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForD" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-ConfidenceIntervalForD")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForD")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForRange" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-ConfidenceIntervalForRange")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForRange")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="variability" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaVariabilityType">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-Variability")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-variability")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="qualityControl">
+              <xs:annotation><xs:appinfo><UI>
+                <widget>tabgroup</widget>
+                <heading>Quality Control</heading>
+                <state>HasRP</state>
+              </UI></xs:appinfo></xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="unconstrained">
+                    <xs:annotation><xs:appinfo><UI>
+                      <widget>tabgroup</widget>
+                      <label>Tests based on unconstrained fits</label>
+                      <virtual>
+                        <item name="ran"><sortid>3</sortid><widget>tabgroup</widget><label>Parallelism: Allowed ranges for parameters</label></item>
+                        <item name="eq"><sortid>4</sortid><widget>tabgroup</widget><label>Parallelism: Equivalence tests for parameters</label></item>
+                      </virtual>
+                    </UI></xs:appinfo></xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="goodnessOfFit" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaSignificanceLevelType">
+                          <xs:annotation><xs:appinfo><UI>
+                                <sortid>2</sortid>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-GoodnessOfFit")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-GoodnessOfFit4PL")</description>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="significanceOfDoseResponse" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaSignificanceLevelType">
+                          <xs:annotation><xs:appinfo><UI>
+                                <sortid>1</sortid>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-SignificanceOfDoseResponse")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-significanceOfDoseResponse")</description>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="rangeForADifference" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForADifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForADifference")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="rangeForDDifference" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForDDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForDDifference")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="rangeForNormalisedADifference" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForNormalisedADifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForNormalisedADifference")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="rangeForNormalisedDDifference" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForNormalisedDDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForNormalisedDDifference")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="rangeForBDifference" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForBDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForBDifference")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="rangeForNormalisedBDifference" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForNormalisedBDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForNormalisedBDifference")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element> 
+                        <xs:element name="rangeForSlopeRatio" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForSlopeRatio")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeForSlopeRatio")</description>
+                                <parent>ran</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForADifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForADifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForADifference")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForDDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForDDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForDDifference")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForNormalisedADifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForNormalisedADifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForNormalisedADifference")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForNormalisedDDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForNormalisedDDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForNormalisedDDifference")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForBDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForBDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForBDifference")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForNormalisedBDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForNormalisedBDifference")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForNormalisedBDifference")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForSlopeRatio" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForSlopeRatio")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForSlopeRatio")</description>
+                                <parent>eq</parent>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="pairwise" maxOccurs="3">
+                    <xs:annotation><xs:appinfo><UI>
+                      <widget>tabgroup</widget>
+                      <label>Tests based on parallel fits</label>
+                    </UI></xs:appinfo></xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="rangeRelativePotency" type="ct:suitabilityCriteriaRange">
+                          <xs:annotation><xs:appinfo><UI>
+                                <sortid>2</sortid>
+                                <label>@Html.LanguageString("DisplayName-analysisdef-rangeRelativePotency")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-rangeRelativePotency")</description>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="equivalenceRelativePotency" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <sortid>3</sortid>
+                                <label>@Html.LanguageString("DisplayName-analysisdef-equivalenceRelativePotency")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-equivalenceRelativePotency")</description>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="parallelism" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaParallelismTestType">
+                          <xs:annotation><xs:appinfo><UI>
+                                <sortid>1</sortid>
+                                <label>@Html.LanguageString("DisplayName-analysisdef-parallelism")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-Parallelism4PL5PL")</description>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                        <xs:element name="foldPrecision" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaUpperConfidenceLevel">
+                          <xs:annotation><xs:appinfo><UI>
+                                <sortid>4</sortid>
+                                <label>@Html.LanguageString("DisplayName-analysisdef-foldPrecision")</label>
+                                <description>@Html.DescriptionString("Description-AnalysisDef-foldPrecision")</description>
+                          </UI></xs:appinfo></xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sampleSuitability">
+        <xs:annotation><xs:appinfo><UI>
+              <widget>tabgroup</widget>
+              <heading>Sample Suitability</heading>
+              <state>HasRP</state>
+        </UI></xs:appinfo></xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="unconstrained">
+              <xs:annotation><xs:appinfo><UI>
+                      <widget>tabgroup</widget>
+                      <label>Tests based on unconstrained fits</label>
+                      <virtual>
+                        <item name="ran"><sortid>3</sortid><widget>tabgroup</widget><label>Parallelism: Allowed ranges for parameters</label></item>
+                        <item name="eq"><sortid>4</sortid><widget>tabgroup</widget><label>Parallelism: Equivalence tests for parameters</label></item>
+                      </virtual>
+              </UI></xs:appinfo></xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="goodnessOfFit" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaSignificanceLevelType">
+                    <xs:annotation><xs:appinfo><UI>
+                          <sortid>2</sortid>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-GoodnessOfFit")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-GoodnessOfFit4PL")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="significanceOfDoseResponse" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaSignificanceLevelType">
+                    <xs:annotation><xs:appinfo><UI>
+                          <sortid>1</sortid>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-SignificanceOfDoseResponse")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-significanceOfDoseResponse")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForADifference" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForADifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForADifferenceSample")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForDDifference" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForDDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForDDifferenceSample")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForNormalisedADifference" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForNormalisedADifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForNormalisedADifferenceSample")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForNormalisedDDifference" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForNormalisedDDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForNormalisedDDifferenceSample")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForBDifference" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForBDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForBDifferenceSample")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="rangeForNormalisedBDifference" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForNormalisedBDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForNormalisedBDifference")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>                  
+                  <xs:element name="rangeForSlopeRatio" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRange">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-rangeForSlopeRatio")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-rangeForSlopeRatioSample")</description>
+                          <parent>ran</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForADifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForADifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForADifferenceSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForDDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForDDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForDDifferenceSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForNormalisedADifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForNormalisedADifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForNormalisedADifferenceSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForNormalisedDDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForNormalisedDDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForNormalisedDDifferenceSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForBDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForBDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForBDifferenceSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForNormalisedBDifference" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForNormalisedBDifference")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-ConfidenceIntervalForNormalisedBDifferenceSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="confidenceIntervalForSlopeRatio" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaRangeConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-AnalysisDef-confidenceIntervalForSlopeRatio")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-confidenceIntervalForSlopeRatioSample")</description>
+                          <parent>eq</parent>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="pairwise" maxOccurs="3">                    
+              <xs:annotation><xs:appinfo><UI>
+                      <widget>tabgroup</widget>
+                      <label>Tests based on parallel fits</label>
+                    </UI></xs:appinfo></xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="parallelism" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaParallelismTestType">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-analysisdef-parallelism")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-Parallelism4PL5PL")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                  <xs:element name="foldPrecision" minOccurs="1" maxOccurs="1" type="ct:suitabilityCriteriaUpperConfidenceLevel">
+                    <xs:annotation><xs:appinfo><UI>
+                          <label>@Html.LanguageString("DisplayName-analysisdef-foldPrecision")</label>
+                          <description>@Html.DescriptionString("Description-AnalysisDef-foldPrecision")</description>
+                    </UI></xs:appinfo></xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="analysisOptionsFourPL">
+    <xs:sequence>
+      <xs:element name="transformDose" type="ct:transformationDose">
+        <xs:annotation><xs:appinfo><UI>
+              <validation><item>
+                <rule>twoLogTransform</rule>
+                <relation>$parent.parent().parent().nodes.get("priorDoseTransformation").value()</relation>
+              </item></validation>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="transformDoseLinearIntercept" type="xs:double">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <widget>textbox</widget>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-LinearIntercept")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-transformDose")</description>
+              <defaultValue>0</defaultValue>
+              <condition>
+                <expression>$parent.nodes.get("transformDose").value()=="linear"</expression>
+                <writeDefault/>
+              </condition>
+              <validation><item>
+                <rule>finite</rule>
+              </item><item>
+                <rule>required</rule>
+              </item></validation>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="transformDoseLinearSlope" type="xs:double">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <widget>textbox</widget>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-LinearSlope")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-transformDose")</description>
+              <defaultValue>1</defaultValue>
+              <condition>
+                <expression>$parent.nodes.get("transformDose").value()=="linear"</expression>
+                <writeDefault/>
+              </condition>
+              <validation><item>
+                <rule>finite</rule>
+              </item><item>
+                <rule>required</rule>
+              </item></validation>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="transformResponse" type="ct:transformationResponse"/>
+      <xs:element name="transformResponseLinearIntercept" type="xs:double">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <widget>textbox</widget>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-LinearIntercept")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-transformResponse")</description>
+              <defaultValue>0</defaultValue>
+              <condition>
+                <expression>$parent.nodes.get("transformResponse").value()=="linear"</expression>
+                <writeDefault/>
+              </condition>
+              <validation><item>
+                <rule>finite</rule>
+              </item><item>
+                <rule>required</rule>
+              </item></validation>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="transformResponseLinearSlope" type="xs:double">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <widget>textbox</widget>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-LinearSlope")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-transformResponse")</description>
+              <defaultValue>1</defaultValue>
+              <condition>
+                <expression>$parent.nodes.get("transformResponse").value()=="linear"</expression>
+                <writeDefault/>
+              </condition>
+              <validation><item>
+                <rule>finite</rule>
+              </item><item>
+                <rule>required</rule>
+              </item></validation>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="outlierIdentification" type="xs:boolean">
+        <xs:annotation><xs:appinfo><UI>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-OutlierIdentification")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-OutlierIdentification")</description>
+              <widget>checkbox</widget>
+              <defaultValue asString="false">false</defaultValue>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="autoOutlierRemoval" type="xs:boolean">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-AutoOutlierRemoval")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-OutlierIdentification")</description>
+              <widget>checkbox</widget>
+              <defaultValue asString="false">false</defaultValue>
+              <condition>
+                <expression>$parent.nodes.get("outlierIdentification").value()</expression>
+                <writeDefault/>
+              </condition>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="outlierIdentificationAlgorithm" type="ct:outlierIdentificationAlgorithmType">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <description>@Html.DescriptionString("Description-AnalysisDef-OutlierIdentification")</description>
+              <condition>
+                <expression>$parent.nodes.get("outlierIdentification").value()</expression>
+                <writeDefault/>
+              </condition>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="parallelMode" type="ct:parallelModeType"/>
+      <xs:element name="isWeighted" type="xs:boolean">
+        <xs:annotation><xs:appinfo><UI>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-UseWeighted")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-UseWeighted")</description>
+              <widget>checkbox</widget>
+              <defaultValue asString="false">false</defaultValue>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="weightA" type="xs:double">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-WeightA")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-UseWeighted")</description>
+              <widget>textbox</widget>
+              <defaultValue>1</defaultValue>
+              <validation><item>
+                <rule>strictlyPositiveDouble</rule>
+              </item><item>
+                <rule>required</rule>
+              </item></validation>
+              <condition>
+                <expression>$parent.nodes.get("isWeighted").value()</expression>
+                <writeDefault/>
+              </condition>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="weightB" type="xs:double">
+        <xs:annotation><xs:appinfo><UI>
+              <indent>true</indent>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-WeightB")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-UseWeighted")</description>
+              <widget>textbox</widget>
+              <defaultValue>1</defaultValue>
+              <validation><item>
+                <rule>strictlyPositiveDouble</rule>
+              </item><item>
+                <rule>required</rule>
+              </item></validation>
+              <condition>
+                <expression>$parent.nodes.get("isWeighted").value()</expression>
+                <writeDefault/>
+              </condition>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="varianceEstimate" type="ct:varianceEstimateType"/>
+      <xs:element name="BisPositive" type="xs:boolean">
+        <xs:annotation><xs:appinfo><UI>
+              <label>@Html.LanguageString("DisplayName-AnalysisDef-BisPositive")</label>
+              <description>@Html.DescriptionString("Description-AnalysisDef-BisPositive")</description>
+              <widget>checkbox</widget>
+              <defaultValue asString="false">true</defaultValue>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="methodForRatios" type="ct:methodForRatiosType">
+        <xs:annotation><xs:appinfo><UI>
+          <description>@Html.DescriptionString("Description-AnalysisDef-MethodForRatios4PL5PL")</description>
+        </UI></xs:appinfo></xs:annotation>
+      </xs:element>
+      <xs:element name="ParallelVariables" minOccurs="1" maxOccurs="3">
+        <xs:annotation><xs:appinfo><UI>
+          <widget>div</widget>
+        </UI></xs:appinfo></xs:annotation>  
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AParallel" type="xs:boolean">
+              <xs:annotation><xs:appinfo><UI>
+                <widget>textbox</widget>
+                <defaultValue>true</defaultValue>
+                <condition>
+                  <expression>false</expression>
+                  <writeDefault/>
+                </condition>
+              </UI></xs:appinfo></xs:annotation> 
+            </xs:element>
+            <xs:element name="BParallel" type="xs:boolean">
+              <xs:annotation><xs:appinfo><UI>
+                <widget>textbox</widget>
+                <defaultValue>true</defaultValue>
+                <condition>
+                  <expression>false</expression>
+                  <writeDefault/>
+                </condition>
+              </UI></xs:appinfo></xs:annotation> 
+            </xs:element>
+            <xs:element name="DParallel" type="xs:boolean">
+              <xs:annotation><xs:appinfo><UI>
+                <widget>textbox</widget>
+                <defaultValue>true</defaultValue>
+                <condition>
+                  <expression>false</expression>
+                  <writeDefault/>
+                </condition>
+              </UI></xs:appinfo></xs:annotation> 
+            </xs:element>
+            <xs:element name="fixedParameters">
+              <xs:annotation><xs:appinfo><UI>
+                <widget>div</widget>
+               </UI></xs:appinfo></xs:annotation>  
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="fixedANonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+                  <xs:element name="fixedAParallel" type="xs:double" minOccurs="0" maxOccurs="1"/>
+                  <xs:element name="fixedBNonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+                  <xs:element name="fixedBParallel" type="xs:double" minOccurs="0" maxOccurs="1"/>
+                  <xs:element name="fixedCNonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+                  <xs:element name="fixedDNonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+                  <xs:element name="fixedDParallel" type="xs:double" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="nonParallelFixedParameters">
+        <xs:annotation><xs:appinfo><UI>
+          <widget>div</widget>
+        </UI></xs:appinfo></xs:annotation>  
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="fixedANonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="fixedBNonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="fixedCNonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="fixedDNonParallel" type="ct:valueNamed" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="resultsFourPL">
+    <xs:sequence>
+      <xs:element name="preDilutedDoses" type="ct:preDilutedDosesType"/>
+      <xs:element name="preProcessing" type="ct:outliersType"/>
+      <xs:element name="systemSuitability" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="controlWells" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="dataSummary" type="ct:continuousDataSummaryType" minOccurs="0"/>
+                  <xs:element name="suitabilityTests">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="meanOfGroup" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="geometricMean" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="decisionsReached" type="ct:decision" minOccurs="1"/>
+                </xs:sequence>
+                <xs:attribute name="sampleLine" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="reference">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="outliers" minOccurs="0" type="ct:outliersType"/>
+                  <xs:element name="dataSummary" type="ct:continuousDataSummaryType" minOccurs="0"/>
+                  <xs:element name="fittedParameters" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <!-- <xs:element name="isSingular" type="xs:boolean"/> -->
+                        <xs:element name="sampleLine" type="xs:string"/>
+                        <xs:element name="A" type="xs:double"/>
+                        <xs:element name="ALowerCI" type="xs:double"/>
+                        <xs:element name="AUpperCI" type="xs:double"/>
+                        <xs:element name="B" type="xs:double"/>
+                        <xs:element name="BLowerCI" type="xs:double"/>
+                        <xs:element name="BUpperCI" type="xs:double"/>
+                        <xs:element name="C" type="xs:double"/>
+                        <xs:element name="CLowerCI" type="xs:double"/>
+                        <xs:element name="CUpperCI" type="xs:double"/>
+                        <xs:element name="D" type="xs:double"/>
+                        <xs:element name="DLowerCI" type="xs:double"/>
+                        <xs:element name="DUpperCI" type="xs:double"/>
+                        <xs:element name="hessian" type="ct:hessianMatrixType" minOccurs="0"/>
+                        <xs:element name="variance" type="xs:double"/>
+                        <xs:element name="sumOfSquares" type="xs:double"/>
+                        <xs:element name="weightedSumOfSquares" type="xs:double"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="suitabilityTests" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="goodnessOfFit" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="value" type="xs:double"/>
+                                    <xs:element name="type">
+                                      <xs:simpleType>
+                                        <xs:restriction base="xs:string">
+                                          <xs:enumeration value="variance"/>
+                                          <xs:enumeration value="5PL"/>
+                                          <xs:enumeration value="none"/>
+                                        </xs:restriction>
+                                      </xs:simpleType>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="parameters" type="xs:double"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="significanceOfDoseResponse" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="xs:double"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="rangeForA" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="rangeForB" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="rangeForC" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="rangeForD" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="range" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <!--<xs:element name="slope" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:rangeType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>-->
+                        <xs:element name="confidenceIntervalForA" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="ct:rangeType"/>
+                              <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForB" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="ct:rangeType"/>
+                              <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForC" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="ct:rangeType"/>
+                              <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForD" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="ct:rangeType"/>
+                              <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="confidenceIntervalForRange" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="ct:rangeType"/>
+                              <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <!--<xs:element name="confidenceIntervalForSlope" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="ct:rangeType"/>
+                              <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>-->
+                        <xs:element name="variability" minOccurs="0" maxOccurs="1">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="calculated" type="xs:double"/>
+                              <xs:element name="parameters" type="ct:variabilityType"/>
+                              <xs:element name="pass" type="xs:boolean"/>
+                              <xs:element name="forInformationOnly" type="xs:boolean"/>
+                              <xs:element name="decision" type="ct:decision"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="decisionsReached" type="ct:decision" minOccurs="1"/>
+                  <xs:element name="graphicalData" type="ct:graphicalDataType" />
+                  <xs:element name="outcome" type="ct:outcomeType" minOccurs="1"/>
+                </xs:sequence>
+                <xs:attribute name="sampleLine" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="qualityControlSample" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="outliers" minOccurs="0" type="ct:outliersType"/>
+                  <xs:element name="dataSummary" type="ct:continuousDataSummaryType" minOccurs="0"/>
+                  <xs:element name="unconstrained" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="fittedParameters" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <!-- <xs:element name="isSingular" type="xs:boolean"/> -->
+                              <xs:element name="sampleLine" type="xs:string"/>
+                              <xs:element name="A" type="xs:double"/>
+                              <xs:element name="ALowerCI" type="xs:double"/>
+                              <xs:element name="AUpperCI" type="xs:double"/>
+                              <xs:element name="B" type="xs:double"/>
+                              <xs:element name="BLowerCI" type="xs:double"/>
+                              <xs:element name="BUpperCI" type="xs:double"/>
+                              <xs:element name="C" type="xs:double"/>
+                              <xs:element name="CLowerCI" type="xs:double"/>
+                              <xs:element name="CUpperCI" type="xs:double"/>
+                              <xs:element name="D" type="xs:double"/>
+                              <xs:element name="DLowerCI" type="xs:double"/>
+                              <xs:element name="DUpperCI" type="xs:double"/>
+                              <xs:element name="hessian" type="ct:hessianMatrixType" minOccurs="0"/>
+                              <xs:element name="variance" type="xs:double"/>
+                              <xs:element name="sumOfSquares" type="xs:double"/>
+                              <xs:element name="weightedSumOfSquares" type="xs:double"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="suitabilityTests" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="goodnessOfFit" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated">
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="value" type="xs:double"/>
+                                          <xs:element name="type">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:enumeration value="variance"/>
+                                                <xs:enumeration value="5PL"/>
+                                                <xs:enumeration value="none"/>
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="parameters" type="xs:double"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="significanceOfDoseResponse" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="xs:double"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForNormalisedADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForNormalisedDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForNormalisedBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForSlopeRatio" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForNormalisedADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForNormalisedDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForNormalisedBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForSlopeRatio" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="graphicalData" type="ct:graphicalDataType" />
+                        <xs:element name="outcome" type="ct:outcomeType" minOccurs="1"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="pairwise" minOccurs="0" maxOccurs="3">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="fittedParameters" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <!-- <xs:element name="isSingular" type="xs:boolean"/> -->
+                              <xs:element name="reference">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="sampleLine" type="xs:string"/>
+                                    <xs:element name="A" type="xs:double"/>
+                                    <xs:element name="ALowerCI" type="xs:double"/>
+                                    <xs:element name="AUpperCI" type="xs:double"/>
+                                    <xs:element name="B" type="xs:double"/>
+                                    <xs:element name="BLowerCI" type="xs:double"/>
+                                    <xs:element name="BUpperCI" type="xs:double"/>
+                                    <xs:element name="C" type="xs:double"/>
+                                    <xs:element name="CLowerCI" type="xs:double"/>
+                                    <xs:element name="CUpperCI" type="xs:double"/>
+                                    <xs:element name="D" type="xs:double"/>
+                                    <xs:element name="DLowerCI" type="xs:double"/>
+                                    <xs:element name="DUpperCI" type="xs:double"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="qualityControlSample">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="sampleLine" type="xs:string"/>
+                                    <xs:element name="A" type="xs:double"/>
+                                    <xs:element name="ALowerCI" type="xs:double"/>
+                                    <xs:element name="AUpperCI" type="xs:double"/>
+                                    <xs:element name="B" type="xs:double"/>
+                                    <xs:element name="BLowerCI" type="xs:double"/>
+                                    <xs:element name="BUpperCI" type="xs:double"/>
+                                    <xs:element name="C" type="xs:double"/>
+                                    <xs:element name="CLowerCI" type="xs:double"/>
+                                    <xs:element name="CUpperCI" type="xs:double"/>
+                                    <xs:element name="D" type="xs:double"/>
+                                    <xs:element name="DLowerCI" type="xs:double"/>
+                                    <xs:element name="DUpperCI" type="xs:double"/>
+                                    <xs:element name="transformedRelativePotency" type="ct:transformedRelativePotencyType" minOccurs="0"/>
+                                    <xs:element name="rawRelativePotency" type="ct:rawRelativePotencyType" minOccurs="0"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="hessian" type="ct:hessianMatrixType" minOccurs="0"/>
+                              <xs:element name="variance" type="xs:double"/>
+                              <xs:element name="goodnessOfFitStatistic" type="xs:double"/>
+                              <xs:element name="goodnessOfFitType">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="variance"/>
+                                    <xs:enumeration value="5PL"/>
+                                    <xs:enumeration value="none"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:element>
+                              <xs:element name="lackOfFitProbability" type="xs:double"/>
+                              <xs:element name="sumSquaredResiduals" type="xs:double"/>
+                              <xs:element name="weightedSumSquaredResiduals" type="xs:double"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="suitabilityTests" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="rangeRelativePotency" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="equivalenceRelativePotency" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="parallelism" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated">
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="pValue" type="xs:double"/>
+                                          <xs:element name="skipped" type="xs:boolean"/>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="parameters" type="ct:parallelismTestType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="foldPrecision" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:upperConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="graphicalData" type="ct:graphicalDataType" />
+                        <xs:element name="outcome" type="ct:outcomeType" minOccurs="1"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="decisionsReached" type="ct:decision" minOccurs="1"/>
+                </xs:sequence>
+                <xs:attribute name="sampleLine" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="decisionsReached" type="ct:decision" minOccurs="1"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sampleSuitability" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="testSample" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="outliers" minOccurs="0" type="ct:outliersType"/>
+                  <xs:element name="dataSummary" type="ct:continuousDataSummaryType" minOccurs="0"/>
+                  <xs:element name="unconstrained" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="fittedParameters" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <!-- <xs:element name="isSingular" type="xs:boolean"/> -->
+                              <xs:element name="sampleLine" type="xs:string"/>
+                              <xs:element name="A" type="xs:double"/>
+                              <xs:element name="ALowerCI" type="xs:double"/>
+                              <xs:element name="AUpperCI" type="xs:double"/>
+                              <xs:element name="B" type="xs:double"/>
+                              <xs:element name="BLowerCI" type="xs:double"/>
+                              <xs:element name="BUpperCI" type="xs:double"/>
+                              <xs:element name="C" type="xs:double"/>
+                              <xs:element name="CLowerCI" type="xs:double"/>
+                              <xs:element name="CUpperCI" type="xs:double"/>
+                              <xs:element name="D" type="xs:double"/>
+                              <xs:element name="DLowerCI" type="xs:double"/>
+                              <xs:element name="DUpperCI" type="xs:double"/>
+                              <xs:element name="hessian" type="ct:hessianMatrixType" minOccurs="0"/>
+                              <xs:element name="variance" type="xs:double"/>
+                              <xs:element name="sumOfSquares" type="xs:double"/>
+                              <xs:element name="weightedSumOfSquares" type="xs:double"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="suitabilityTests" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="goodnessOfFit" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated">
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="value" type="xs:double"/>
+                                          <xs:element name="type">
+                                            <xs:simpleType>
+                                              <xs:restriction base="xs:string">
+                                                <xs:enumeration value="variance"/>
+                                                <xs:enumeration value="5PL"/>
+                                                <xs:enumeration value="none"/>
+                                              </xs:restriction>
+                                            </xs:simpleType>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="parameters" type="xs:double"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="significanceOfDoseResponse" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="xs:double"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForNormalisedADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForNormalisedDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="rangeForNormalisedBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <!-- <xs:element name="rangeForSlopeDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>-->
+                              <xs:element name="rangeForSlopeRatio" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:rangeType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForNormalisedADifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForNormalisedDDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="confidenceIntervalForNormalisedBDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+
+                              <!--<xs:element name="confidenceIntervalForSlopeDifference" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>-->
+                              <xs:element name="confidenceIntervalForSlopeRatio" minOccurs="0">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="ct:rangeType"/>
+                                    <xs:element name="parameters" type="ct:rangeConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="graphicalData" type="ct:graphicalDataType" />
+                        <xs:element name="outcome" type="ct:outcomeType" minOccurs="1"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="pairwise" minOccurs="0" maxOccurs="3">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="fittedParameters" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <!-- <xs:element name="isSingular" type="xs:boolean"/> -->
+                              <xs:element name="reference">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="sampleLine" type="xs:string"/>
+                                    <xs:element name="A" type="xs:double"/>
+                                    <xs:element name="ALowerCI" type="xs:double"/>
+                                    <xs:element name="AUpperCI" type="xs:double"/>
+                                    <xs:element name="B" type="xs:double"/>
+                                    <xs:element name="BLowerCI" type="xs:double"/>
+                                    <xs:element name="BUpperCI" type="xs:double"/>
+                                    <xs:element name="C" type="xs:double"/>
+                                    <xs:element name="CLowerCI" type="xs:double"/>
+                                    <xs:element name="CUpperCI" type="xs:double"/>
+                                    <xs:element name="D" type="xs:double"/>
+                                    <xs:element name="DLowerCI" type="xs:double"/>
+                                    <xs:element name="DUpperCI" type="xs:double"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="testSample">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="sampleLine" type="xs:string"/>
+                                    <xs:element name="A" type="xs:double"/>
+                                    <xs:element name="ALowerCI" type="xs:double"/>
+                                    <xs:element name="AUpperCI" type="xs:double"/>
+                                    <xs:element name="B" type="xs:double"/>
+                                    <xs:element name="BLowerCI" type="xs:double"/>
+                                    <xs:element name="BUpperCI" type="xs:double"/>
+                                    <xs:element name="C" type="xs:double"/>
+                                    <xs:element name="CLowerCI" type="xs:double"/>
+                                    <xs:element name="CUpperCI" type="xs:double"/>
+                                    <xs:element name="D" type="xs:double"/>
+                                    <xs:element name="DLowerCI" type="xs:double"/>
+                                    <xs:element name="DUpperCI" type="xs:double"/>
+                                    <xs:element name="transformedRelativePotency" type="ct:transformedRelativePotencyType" minOccurs="0"/>
+                                    <xs:element name="rawRelativePotency" type="ct:rawRelativePotencyType" minOccurs="0"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="hessian" type="ct:hessianMatrixType" minOccurs="0"/>
+                              <xs:element name="variance" type="xs:double"/>
+                              <xs:element name="goodnessOfFitStatistic" type="xs:double"/>
+                              <xs:element name="goodnessOfFitType">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="variance"/>
+                                    <xs:enumeration value="5PL"/>
+                                    <xs:enumeration value="none"/>
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:element>
+                              <xs:element name="lackOfFitProbability" type="xs:double"/>
+                              <xs:element name="sumSquaredResiduals" type="xs:double"/>
+                              <xs:element name="weightedSumSquaredResiduals" type="xs:double"/>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="suitabilityTests" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="parallelism" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated">
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="pValue" type="xs:double"/>
+                                          <xs:element name="skipped" type="xs:boolean"/>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="parameters" type="ct:parallelismTestType"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="foldPrecision" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="calculated" type="xs:double"/>
+                                    <xs:element name="parameters" type="ct:upperConfidenceLevel"/>
+                                    <xs:element name="pass" type="xs:boolean"/>
+                                    <xs:element name="forInformationOnly" type="xs:boolean"/>
+                                    <xs:element name="decision" type="ct:decision"/>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>                              
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="graphicalData" type="ct:graphicalDataType" />
+                        <xs:element name="outcome" type="ct:outcomeType" minOccurs="1"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="decisionsReached" type="ct:decision" minOccurs="1"/>
+                </xs:sequence>
+                <xs:attribute name="sampleLine" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
