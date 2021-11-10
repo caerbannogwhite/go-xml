@@ -9,17 +9,17 @@ import (
 	"regexp"
 	"strings"
 
-	"aqwari.net/xml/internal/gen"
-	"aqwari.net/xml/xsd"
+	"internal/gen"
+	"xsd"
 )
 
 // A Config holds user-defined overrides and filters that are used when
 // generating Go source code from an xsd document.
 type Config struct {
-	logger          Logger
-	loglevel        int
-	namespaces      []string
-	pkgname         string
+	logger     Logger
+	loglevel   int
+	namespaces []string
+	pkgname    string
 	// load xsd imports recursively into memory before parsing
 	followImports   bool
 	preprocessType  typeTransform

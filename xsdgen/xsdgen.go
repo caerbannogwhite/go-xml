@@ -11,10 +11,10 @@ import (
 	"strconv"
 	"strings"
 
-	"aqwari.net/xml/internal/dependency"
-	"aqwari.net/xml/internal/gen"
-	"aqwari.net/xml/xmltree"
-	"aqwari.net/xml/xsd"
+	"internal/dependency"
+	"internal/gen"
+	"xmltree"
+	"xsd"
 )
 
 type orderedStringMap interface {
