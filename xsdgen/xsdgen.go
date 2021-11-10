@@ -549,6 +549,7 @@ type fieldOverride struct {
 	DefaultValue     string
 	Type             xsd.Type
 	Tag              string
+	Pointer          bool
 }
 
 type nameGenerator struct {
@@ -695,8 +696,6 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		}
 
 		base, err := cfg.expr(el.Type)
-		fmt.Println(base, base.Pos(), base.End())
-
 		if err != nil {
 			return nil, fmt.Errorf("%s element %s: %v", t.Name.Local, el.Name.Local, err)
 		}
@@ -743,6 +742,7 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 				Tag:          tag,
 				ToType:       typeName,
 				Type:         el.Type,
+				Pointer:      el.Nillable,
 			})
 		}
 	}
@@ -772,6 +772,11 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		cfg.debugf("adding %s attribute %s as %v", t.Name.Local, attr.Name.Local, base)
 		name := namegen.attribute(attr.Name)
 
+		// optional type (pointer)
+		if attr.Optional {
+			base = &ast.StarExpr{X: base}
+		}
+
 		// append the new field of the struct as (name, base, tag) tuple
 		fields = append(fields, name, base, gen.String(tag))
 		if attr.Default != "" || nonTrivialBuiltin(attr.Type) {
@@ -791,6 +796,7 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 				Tag:          tag,
 				ToType:       typeName,
 				Type:         attr.Type,
+				Pointer:      attr.Optional,
 			})
 		}
 	}
@@ -842,7 +848,7 @@ func (cfg *Config) genComplexTypeMethods(t *xsd.ComplexType, overrides []fieldOv
 			}
 			overlay.T = (*T)(t)
 			{{range .Overrides}}
-			overlay.{{.FieldName}} = (*{{.ToType}})(&overlay.T.{{.FieldName}})
+			overlay.{{.FieldName}} = (*{{.ToType}})({{if not .Pointer -}}&{{end -}}overlay.T.{{.FieldName}})
 			{{if .DefaultValue -}}
 			// overlay.{{.FieldName}} = {{.DefaultValue}}
 			{{end -}}
@@ -882,7 +888,7 @@ func (cfg *Config) genComplexTypeMethods(t *xsd.ComplexType, overrides []fieldOv
 			}
 			layout.T = (*T)(t)
 			{{- range .Overrides}}
-			layout.{{.FieldName}} = (*{{.ToType}})(&layout.T.{{.FieldName}})
+			layout.{{.FieldName}} = (*{{.ToType}})({{if not .Pointer -}}&{{end -}}layout.T.{{.FieldName}})
 			{{end -}}
 
 			return e.EncodeElement(layout, start)
