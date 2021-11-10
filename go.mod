@@ -1,8 +1,34 @@
-module aqwari.net/xml
+module test
 
-go 1.15
+go 1.17
+
+replace xsd v0.0.0 => ./xsd
+
+replace xsdgen v0.0.0 => ./xsdgen
+
+replace xmltree v0.0.0 => ./xmltree
+
+replace internal/dependency v0.0.0 => ./internal/dependency
+
+replace internal/gen v0.0.0 => ./internal/gen
+
+replace internal/commandline v0.0.0 => ./internal/commandline
 
 require (
-	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc
-	golang.org/x/tools v0.0.0-20200821192610-3366bbee4705
+	aqwari.net/xml v0.0.0-20210331023308-d9421b293817
+	xsdgen v0.0.0
+)
+
+require (
+	golang.org/x/mod v0.4.2 // indirect
+	golang.org/x/net v0.0.0-20211108170745-6635138e15ea // indirect
+	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
+	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/tools v0.1.7 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	internal/commandline v0.0.0 // indirect
+	internal/dependency v0.0.0 // indirect
+	internal/gen v0.0.0 // indirect
+	xmltree v0.0.0 // indirect
+	xsd v0.0.0 // indirect
 )
