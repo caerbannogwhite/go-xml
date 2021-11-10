@@ -63,7 +63,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, err)
 	}
 
-	fh, err := os.Create(path.Join("api", OUTPUT_FILE_NAME))
+	fh, err := os.Create(path.Join("output", OUTPUT_FILE_NAME))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
