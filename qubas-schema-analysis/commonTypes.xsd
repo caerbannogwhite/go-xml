@@ -737,10 +737,10 @@
         <xs:element name="isPositive" type="xs:boolean">
           <xs:annotation><xs:appinfo><UI>
                 <widget>dropdown</widget>
-                <choices>
+                <!--<choices>
                   <choice label='@Html.LanguageString("DisplayName-AnalysisOpt-positive")' value="true"/>
                   <choice label='@Html.LanguageString("DisplayName-AnalysisOpt-negative")' value="false"/>
-                </choices>
+                </choices>-->
                 <label>@Html.LanguageString("DisplayName-AnalysisDef-IsPositive")</label>
                 <defaultValue asString="false">true</defaultValue>
           </UI></xs:appinfo></xs:annotation>

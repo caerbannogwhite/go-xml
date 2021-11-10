@@ -5,7 +5,10 @@
             xmlns:fivePL="tnsFivePL"
 						xmlns:linear="tnsLinearModel"
             xmlns:quantal="tnsQuantalModel"
-						elementFormDefault="unqualified">
+            xmlns:mn="tnsMain"
+            targetNamespace="tnsMain"
+						elementFormDefault="unqualified"
+            attributeFormDefault="unqualified">
 
   <xs:import namespace="tnsCommonTypes" schemaLocation="commonTypes.xsd"/>
   <xs:import namespace="tnsLinearModel" schemaLocation="linearModel.xsd"/>
