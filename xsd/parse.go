@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"aqwari.net/xml/internal/dependency"
-	"aqwari.net/xml/xmltree"
+	"internal/dependency"
+	"xmltree"
 )
 
 func hasCycle(root *xmltree.Element, visited map[*xmltree.Element]struct{}) bool {

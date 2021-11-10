@@ -21,7 +21,7 @@ import (
 	"regexp"
 	"time"
 
-	"aqwari.net/xml/xmltree"
+	"xmltree"
 )
 
 const (
