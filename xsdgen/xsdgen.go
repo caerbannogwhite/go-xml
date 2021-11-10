@@ -194,6 +194,7 @@ func (cfg *Config) gen(primaries, deps []xsd.Schema) (*Code, error) {
 		return nil, errList
 	}
 
+	// user callback called
 	if cfg.postprocessType != nil {
 		cfg.debugf("running user-defined post-processing functions")
 		for name, s := range code.decls {
@@ -694,6 +695,8 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		}
 
 		base, err := cfg.expr(el.Type)
+		fmt.Println(base, base.Pos(), base.End())
+
 		if err != nil {
 			return nil, fmt.Errorf("%s element %s: %v", t.Name.Local, el.Name.Local, err)
 		}
@@ -710,9 +713,18 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 				base = builtinExpr(xsd.String)
 			}
 		}
+
+		// array type
 		if el.Plural {
 			base = &ast.ArrayType{Elt: base}
 		}
+
+		// nillable type (pointer)
+		if el.Nillable {
+			base = &ast.StarExpr{X: base}
+		}
+
+		// append the new field of the struct as (name, base, tag) tuple
 		fields = append(fields, name, base, gen.String(tag))
 		if el.Default != "" || nonTrivialBuiltin(el.Type) {
 			typeName := cfg.exprString(el.Type)
@@ -734,6 +746,8 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 			})
 		}
 	}
+
+	// attributes
 	for _, attr := range attributes {
 		options := ""
 		if attr.Optional {
@@ -757,6 +771,8 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		}
 		cfg.debugf("adding %s attribute %s as %v", t.Name.Local, attr.Name.Local, base)
 		name := namegen.attribute(attr.Name)
+
+		// append the new field of the struct as (name, base, tag) tuple
 		fields = append(fields, name, base, gen.String(tag))
 		if attr.Default != "" || nonTrivialBuiltin(attr.Type) {
 			typeName := cfg.exprString(attr.Type)
@@ -778,6 +794,7 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 			})
 		}
 	}
+
 	expr := gen.Struct(fields...)
 	s := spec{
 		doc:         t.Doc,
