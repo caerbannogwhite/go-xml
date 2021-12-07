@@ -1,3 +1,7 @@
+**Read Me**
+
+Original repository [https://github.com/droyo/go-xml].
+
 This repository contains a collection of Go packages for working
 with XML, with the ultimate goal of enabling code generation based
 on XML documents.
@@ -12,8 +16,11 @@ on XML documents.
 - The `xsdgen` package provides a customizable code generator that
   generates Go type declarations and marshal/unmarshal methods for
   an XML Schema.
-<!-- - The `wsdl` package parses Web Service Definition Language (WSDL)
-  files, which describe a (usually) SOAP web service.
-- The `wsdlgen` package generates Go source code from WSDL files. -->
-- The `xsdgen` and `wsdlgen` commands generate Go code with default
-  settings and are suitable for use with `go generate`.
+
+**Future Features/Nice To Have**
+
+- Might be a good idea to convert optional children and attributes into Nullable types.
+
+**Change Log**
+
+- Optional children and attributes are converted into pointers.
