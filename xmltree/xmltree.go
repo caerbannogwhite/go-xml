@@ -282,7 +282,7 @@ walk:
 // The walk method calls the walkFunc for each of the Element's children.
 // If the WalkFunc returns a non-nil error, Walk will return it
 // immediately.
-func (el *Element) walk(fn walkFunc) error {
+func (el *Element) Walk(fn WalkFunc) error {
 	for i := 0; i < len(el.Children); i++ {
 		fn(&el.Children[i])
 	}
@@ -315,7 +315,7 @@ func (el *Element) SetAttr(space, local, value string) {
 
 // walkFunc is the type of the function called for each of an Element's
 // children.
-type walkFunc func(*Element)
+type WalkFunc func(*Element)
 
 // SearchFunc traverses the Element tree in depth-first order and returns
 // a slice of Elements for which the function fn returns true.
@@ -327,9 +327,9 @@ func (root *Element) SearchFunc(fn func(*Element) bool) []*Element {
 		if fn(el) {
 			results = append(results, el)
 		}
-		el.walk(search)
+		el.Walk(search)
 	}
-	root.walk(search)
+	root.Walk(search)
 	return results
 }
 
