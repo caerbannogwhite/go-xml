@@ -39,6 +39,13 @@ type Config struct {
 	// Transform for names
 	nameTransform func(xml.Name) xml.Name
 
+	// If false (by default), the name space does not appear
+	// in the xml tags
+	includeNamespaceInTag bool
+	// Optional elements and attributes are represented
+	// with pointers
+	optionalAsNillable bool
+
 	// if populated, only types that are true in this map
 	// will be selected.
 	allowTypes map[xml.Name]bool
@@ -69,10 +76,28 @@ type Option func(*Config) Option
 var DefaultOptions = []Option{
 	IgnoreAttributes("id", "href", "ref", "offset"),
 	Replace(`[._ \s-]`, ""),
-	PackageName("ws"),
+	PackageName("main"),
 	HandleSOAPArrayType(),
 	SOAPArrayAsSlice(),
 	UseFieldNames(),
+	OptionalAsNillable(false),
+	IncludeNameSpaceInTags(true),
+}
+
+func IncludeNameSpaceInTags(choice bool) Option {
+	return func(cfg *Config) Option {
+		prev := cfg.includeNamespaceInTag
+		cfg.includeNamespaceInTag = choice
+		return IncludeNameSpaceInTags(prev)
+	}
+}
+
+func OptionalAsNillable(choice bool) Option {
+	return func(cfg *Config) Option {
+		prev := cfg.optionalAsNillable
+		cfg.optionalAsNillable = choice
+		return OptionalAsNillable(prev)
+	}
 }
 
 // The Namespaces option configures the code generation process
@@ -474,7 +499,8 @@ func (cfg *Config) public(name xml.Name) string {
 	if cfg.nameTransform != nil {
 		name = cfg.nameTransform(name)
 	}
-	return strings.Title(name.Local)
+	// return strings.Title(name.Local)
+	return fmt.Sprintf("%s_%s", strings.Title(name.Space), strings.Title(name.Local))
 }
 
 //
