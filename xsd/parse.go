@@ -104,11 +104,13 @@ func Normalize(docs ...[]byte) ([]*xmltree.Element, error) {
 			result = append(result, root.Search(schemaNS, "schema")...)
 		}
 	}
+
 	for _, root := range result {
 		attributeDefaultType(root)
 		elementDefaultType(root)
 		copyEltNamesToAnonTypes(root)
 	}
+
 	typeCounter := 0
 	for _, root := range result {
 		if err := nameAnonymousTypes(root, &typeCounter); err != nil {
@@ -171,6 +173,7 @@ func Parse(docs ...[]byte) ([]Schema, error) {
 		s.propagateMixedAttr()
 		result = append(result, s)
 	}
+
 	result = append(result, builtinSchema)
 	return result, nil
 }
@@ -617,10 +620,12 @@ func (s *Schema) parseTypes(root *xmltree.Element) (err error) {
 		t := s.parseComplexType(el)
 		s.Types[t.Name] = t
 	}
+
 	for _, el := range root.Search(schemaNS, "simpleType") {
 		t := s.parseSimpleType(el)
 		s.Types[t.Name] = t
 	}
+
 	s.Types[xml.Name{tns, "_self"}] = s.parseSelfType(root)
 	return err
 }
@@ -646,6 +651,7 @@ func (s *Schema) parseSelfType(root *xmltree.Element) *ComplexType {
 func (s *Schema) parseComplexType(root *xmltree.Element) *ComplexType {
 	var t ComplexType
 	var doc annotation
+
 	t.Name = root.ResolveDefault(root.Attr("", "name"), s.TargetNS)
 	t.Abstract = parseBool(root.Attr("", "abstract"))
 	t.Mixed = parseBool(root.Attr("", "mixed"))
@@ -699,6 +705,7 @@ func (t *ComplexType) parseComplexContent(ns string, root *xmltree.Element) {
 	if mixed := root.Attr("", "mixed"); mixed != "" {
 		t.Mixed = parseBool(mixed)
 	}
+
 	walk(root, func(el *xmltree.Element) {
 		switch el.Name.Local {
 		case "extension":
@@ -833,6 +840,7 @@ func parseElement(ns string, el *xmltree.Element) Element {
 	} else if e.Default != "" {
 		e.Optional = true
 	}
+
 	walk(el, func(el *xmltree.Element) {
 		if el.Name.Local == "annotation" {
 			doc = doc.append(parseAnnotation(el))
@@ -904,7 +912,7 @@ func (s *Schema) parseSimpleType(root *xmltree.Element) *SimpleType {
 
 func parseAnnotation(el *xmltree.Element) (doc annotation) {
 	if err := xmltree.Unmarshal(el, &doc); err != nil {
-		stop(err.Error())
+		fmt.Println(err.Error())
 	}
 	return doc
 }
