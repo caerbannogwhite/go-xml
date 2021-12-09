@@ -681,15 +681,17 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 	cfg.debugf("complexType %s: generating struct fields for %d elements and %d attributes",
 		xsd.XMLName(t).Local, len(elements), len(attributes))
 
+	// elements
 	for _, el := range elements {
 		options := ""
+		el.Nillable = el.Nillable || (el.Optional && cfg.optionalAsNillable)
 		if el.Nillable || el.Optional {
 			options = ",omitempty"
 		}
 
 		// consisering empty name space
 		var tag string
-		if el.Name.Space == "" {
+		if !cfg.includeNamespaceInTag || el.Name.Space == "" {
 			tag = fmt.Sprintf(`xml:"%s%s"`, el.Name.Local, options)
 		} else {
 			tag = fmt.Sprintf(`xml:"%s %s%s"`, el.Name.Space, el.Name.Local, options)
@@ -700,6 +702,7 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 			return nil, fmt.Errorf("%s element %s: %v", t.Name.Local, el.Name.Local, err)
 		}
 		name := namegen.element(el.Name)
+		fmt.Println(name)
 		if el.Wildcard {
 			tag = `xml:",any"`
 			if el.Plural {
@@ -760,11 +763,12 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 			}
 		}
 		var tag string
-		if qualified {
+		if cfg.includeNamespaceInTag && qualified {
 			tag = fmt.Sprintf(`xml:"%s %s,attr%s"`, attr.Name.Space, attr.Name.Local, options)
 		} else {
 			tag = fmt.Sprintf(`xml:"%s,attr%s"`, attr.Name.Local, options)
 		}
+
 		base, err := cfg.expr(attr.Type)
 		if err != nil {
 			return nil, fmt.Errorf("%s attribute %s: %v", t.Name.Local, attr.Name.Local, err)
