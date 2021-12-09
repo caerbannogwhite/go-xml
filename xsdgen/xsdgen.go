@@ -574,7 +574,9 @@ func (gen *nameGenerator) unique(name string) ast.Expr {
 }
 
 func (gen *nameGenerator) attribute(base xml.Name) ast.Expr {
-	name := gen.cfg.public(base)
+	// name := gen.cfg.public(base)
+	name := strings.Title(base.Local)
+
 	if _, ok := gen.taken[name]; !ok {
 		gen.taken[name] = struct{}{}
 		return ast.NewIdent(name)
@@ -583,7 +585,9 @@ func (gen *nameGenerator) attribute(base xml.Name) ast.Expr {
 }
 
 func (gen *nameGenerator) element(base xml.Name) ast.Expr {
-	name := gen.cfg.public(base)
+	// name := gen.cfg.public(base)
+	name := strings.Title(base.Local)
+
 	if _, ok := gen.taken[name]; !ok {
 		gen.taken[name] = struct{}{}
 		return ast.NewIdent(name)
@@ -701,8 +705,8 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		if err != nil {
 			return nil, fmt.Errorf("%s element %s: %v", t.Name.Local, el.Name.Local, err)
 		}
+
 		name := namegen.element(el.Name)
-		fmt.Println(name)
 		if el.Wildcard {
 			tag = `xml:",any"`
 			if el.Plural {
