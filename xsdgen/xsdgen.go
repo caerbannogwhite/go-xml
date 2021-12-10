@@ -855,14 +855,22 @@ func (cfg *Config) genComplexTypeMethods(t *xsd.ComplexType, overrides []fieldOv
 				{{end}}
 			}
 			overlay.T = (*T)(t)
+			
+			err := d.DecodeElement(&overlay, &start)
+			
 			{{range .Overrides}}
-			overlay.{{.FieldName}} = (*{{.ToType}})({{if not .Pointer -}}&{{end -}}overlay.T.{{.FieldName}})
+			{{if not .Pointer -}}
+			overlay.{{.FieldName}} = (*{{.ToType}})(overlay.T.{{.FieldName}})
+			{{end -}}
+			{{if .Pointer -}}
+			t.{{.FieldName}} = overlay.{{.FieldName}}
+			{{end -}}
 			{{if .DefaultValue -}}
 			// overlay.{{.FieldName}} = {{.DefaultValue}}
 			{{end -}}
 			{{end}}
 
-			return d.DecodeElement(&overlay, &start)
+			return err
 		`, data).Decl()
 	if err != nil {
 		return nil, nil, err
