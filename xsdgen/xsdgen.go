@@ -140,6 +140,18 @@ func (cfg *Config) gen(primaries, deps []xsd.Schema) (*Code, error) {
 		decls: make(specListing),
 	}
 
+	// Add the InnerXML struct
+	// if cfg.stringAsInnerXML  { // if at least one element in stringAsInnerXML
+	code.decls["InnerXML"] = spec{
+		name: "InnerXML",
+		expr: gen.Struct([]ast.Expr{
+			ast.NewIdent("Text"),
+			ast.NewIdent("string"),
+			gen.String(`xml:",innerxml"`),
+		}...),
+	}
+	// }
+
 	all := make(map[xml.Name]xsd.Type)
 	for _, primary := range primaries {
 		for k, v := range primary.Types {
@@ -704,6 +716,13 @@ func (cfg *Config) genComplexType(t *xsd.ComplexType) ([]spec, error) {
 		base, err := cfg.expr(el.Type)
 		if err != nil {
 			return nil, fmt.Errorf("%s element %s: %v", t.Name.Local, el.Name.Local, err)
+		}
+
+		// fmt.Println(el.Name.Local, el.Type.(xsd.Builtin).Name().Local)
+		if _, ok1 := cfg.stringAsInnerXML[el.Name.Local]; ok1 {
+			if b, ok2 := el.Type.(xsd.Builtin); ok2 && b.Name().Local == "string" {
+				base = ast.NewIdent("InnerXML")
+			}
 		}
 
 		name := namegen.element(el.Name)
