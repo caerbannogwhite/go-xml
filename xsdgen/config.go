@@ -40,11 +40,16 @@ type Config struct {
 	nameTransform func(xml.Name) xml.Name
 
 	// If false (by default), the name space does not appear
-	// in the xml tags
+	// in the xml tags.
 	includeNamespaceInTag bool
+
 	// Optional elements and attributes are represented
-	// with pointers
+	// with pointers.
 	optionalAsNillable bool
+
+	// If true, all the strings are converted to InnerXML
+	// type.
+	stringAsInnerXML map[string]bool
 
 	// if populated, only types that are true in this map
 	// will be selected.
@@ -82,6 +87,7 @@ var DefaultOptions = []Option{
 	UseFieldNames(),
 	OptionalAsNillable(false),
 	IncludeNameSpaceInTags(true),
+	StringAsInnerXML(make(map[string]bool)),
 }
 
 func IncludeNameSpaceInTags(choice bool) Option {
@@ -97,6 +103,14 @@ func OptionalAsNillable(choice bool) Option {
 		prev := cfg.optionalAsNillable
 		cfg.optionalAsNillable = choice
 		return OptionalAsNillable(prev)
+	}
+}
+
+func StringAsInnerXML(names map[string]bool) Option {
+	return func(cfg *Config) Option {
+		prev := cfg.stringAsInnerXML
+		cfg.stringAsInnerXML = names
+		return StringAsInnerXML(prev)
 	}
 }
 
@@ -468,7 +482,7 @@ func (cfg *Config) expr(t xsd.Type) (ast.Expr, error) {
 	if t, ok := t.(xsd.Builtin); ok {
 		ex := builtinExpr(t)
 		if ex == nil {
-			return nil, fmt.Errorf("Unknown built-in type %q", t.Name().Local)
+			return nil, fmt.Errorf("unknown built-in type %q", t.Name().Local)
 		}
 		return ex, nil
 	}

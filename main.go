@@ -76,7 +76,9 @@ func main() {
 		xsdgen.OptionalAsNillable(true),
 		xsdgen.IncludeNameSpaceInTags(false),
 		xsdgen.ProcessTypes(processTypesCallback),
-		xsdgen.IgnoreElements("choices"),
+		xsdgen.StringAsInnerXML(map[string]bool{
+			"content": true,
+		}),
 	)
 
 	source, err := cfg.GenSource(fileNames...)
