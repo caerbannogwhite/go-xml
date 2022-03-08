@@ -11,7 +11,7 @@ import (
 	"xsdgen"
 )
 
-var OUTPUT_FILE_NAME string = "qbas_api.go"
+var OUTPUT_FILE_NAME string = "qbas_schema.go"
 var QBAS_API_FIXED_VALUES map[string]string
 
 func main() {
@@ -73,6 +73,7 @@ func main() {
 	var cfg xsdgen.Config
 	cfg.Option(xsdgen.DefaultOptions...)
 	cfg.Option(
+		xsdgen.PackageName("schema"),
 		xsdgen.OptionalAsNillable(true),
 		xsdgen.IncludeNameSpaceInTags(false),
 		xsdgen.ProcessTypes(processTypesCallback),
