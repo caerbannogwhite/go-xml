@@ -16,6 +16,7 @@ replace internal/commandline v0.0.0 => ./internal/commandline
 
 require (
 	aqwari.net/xml v0.0.0-20210331023308-d9421b293817
+	xsd v0.0.0
 	xsdgen v0.0.0
 )
 
@@ -30,5 +31,4 @@ require (
 	internal/dependency v0.0.0 // indirect
 	internal/gen v0.0.0 // indirect
 	xmltree v0.0.0 // indirect
-	xsd v0.0.0 // indirect
 )

@@ -13,6 +13,11 @@ var OUTPUT_FILE_NAME string = "qbas_api.go"
 var QBAS_API_FIXED_VALUES map[string]string
 
 func main() {
+	if len(os.Args) != 3 {
+		fmt.Println("\nExample: go run main.go path/to/schema output/path\n")
+		os.Exit(0)
+	}
+
 	schemaPath := os.Args[1]
 	outputPaht := os.Args[2]
 
