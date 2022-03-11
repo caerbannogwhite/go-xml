@@ -1,6 +1,6 @@
 **Read Me**
 
-Original repository [https://github.com/droyo/go-xml].
+Original GitHub [repository](https://github.com/droyo/go-xml).
 
 This repository contains a collection of Go packages for working
 with XML, with the ultimate goal of enabling code generation based
@@ -19,8 +19,10 @@ on XML documents.
 
 **Future Features/Nice To Have**
 
+- Do something about the import paths.
 - Might be a good idea to convert optional children and attributes into Nullable types.
 
 **Change Log**
 
+- Added `InnerXML` type.
 - Optional children and attributes are converted into pointers.

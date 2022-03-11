@@ -65,7 +65,7 @@ func main() {
 	}
 
 	// Add the following attributes to the main schema
-	attributes := `xmlns:mn="tnsMain" targetNamespace="tnsMain"`
+	attributes := `xmlns="tnsMain" targetNamespace="tnsMain"`
 	mainBytes, err := ioutil.ReadFile(mainPath)
 	if err != nil {
 		fmt.Println(err)
