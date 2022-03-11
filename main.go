@@ -13,15 +13,37 @@ import (
 
 var OUTPUT_FILE_NAME string = "qbas_schema.go"
 var QBAS_API_FIXED_VALUES map[string]string
+var PACKAGE_NAMES []string = []string{
+	"analysisSchema",
+	"elisaSchema",
+	"rpCombinationSchema",
+}
+
+func IsValidPackageName(packageName string) bool {
+	for _, name := range PACKAGE_NAMES {
+		if name == packageName {
+			return true
+		}
+	}
+	return false
+}
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Println("\nExample: go run main.go path/to/schema output/path\n")
+	if len(os.Args) != 4 {
+		fmt.Println("Exactly 3 arguments are needed.")
+		fmt.Println("\nExample: go run main.go path/to/schema output/path packageName")
+		fmt.Println("'packageName' as to be one in", PACKAGE_NAMES)
+		fmt.Println()
 		os.Exit(0)
 	}
 
 	schemaPath := os.Args[1]
 	outputPaht := os.Args[2]
+	packageName := os.Args[3]
+	if !IsValidPackageName(packageName) {
+		fmt.Println("Error: unknown package name: ", packageName)
+		os.Exit(1)
+	}
 
 	// generate a new map
 	QBAS_API_FIXED_VALUES = make(map[string]string)
@@ -73,7 +95,7 @@ func main() {
 	var cfg xsdgen.Config
 	cfg.Option(xsdgen.DefaultOptions...)
 	cfg.Option(
-		xsdgen.PackageName("schema"),
+		xsdgen.PackageName(packageName),
 		xsdgen.OptionalAsNillable(true),
 		xsdgen.IncludeNameSpaceInTags(false),
 		xsdgen.ProcessTypes(processTypesCallback),
