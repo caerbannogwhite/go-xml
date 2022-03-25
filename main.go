@@ -101,6 +101,7 @@ func main() {
 		xsdgen.ProcessTypes(processTypesCallback),
 		xsdgen.StringAsInnerXML(map[string]bool{
 			"content": true,
+			"name":    true,
 		}),
 	)
 

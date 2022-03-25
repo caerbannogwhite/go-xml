@@ -955,6 +955,12 @@ func (cfg *Config) genSimpleType(t *xsd.SimpleType) ([]spec, error) {
 			t.Name.Local, xsd.XMLName(t.Base).Local, err)
 	}
 
+	if _, ok1 := cfg.stringAsInnerXML[t.Name.Local]; ok1 {
+		if b, ok2 := t.Base.(xsd.Builtin); ok2 && b.Name().Local == "string" {
+			base = ast.NewIdent("InnerXML")
+		}
+	}
+
 	spec, err := cfg.addSpecMethods(spec{
 		doc:     t.Doc,
 		name:    cfg.public(t.Name),
