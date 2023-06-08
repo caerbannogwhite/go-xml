@@ -1,4 +1,4 @@
-**Read Me**
+# Read Me
 
 Original GitHub [repository](https://github.com/droyo/go-xml).
 
@@ -17,12 +17,18 @@ on XML documents.
   generates Go type declarations and marshal/unmarshal methods for
   an XML Schema.
 
-**Future Features/Nice To Have**
+## How to use
+
+```powershell
+go run .\main.go C:\dev\qubasschemas\analysis\6\ C:\dev\qubas-site\QBAS\Go\analysis\schema\ analysisSchema
+```
+
+## Future Features/Nice To Have
 
 - Do something about the import paths.
 - Might be a good idea to convert optional children and attributes into Nullable types.
 
-**Change Log**
+## Change Log
 
 - Added `InnerXML` type.
 - Optional children and attributes are converted into pointers.
