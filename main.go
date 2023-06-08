@@ -98,7 +98,7 @@ func main() {
 		xsdgen.PackageName(packageName),
 		xsdgen.OptionalAsNillable(true),
 		xsdgen.IncludeNameSpaceInTags(false),
-		xsdgen.ProcessTypes(processTypesCallback),
+		xsdgen.ProcessTypes(processTypesToStringCallback),
 		xsdgen.StringAsInnerXML(map[string]bool{
 			"content": true,
 			"name":    true,
@@ -137,6 +137,44 @@ func processTypesCallback(schema xsd.Schema, t xsd.Type) xsd.Type {
 			}
 		}
 		return ct
+	}
+	return t
+}
+
+// Process all types as before but also convert all base data types to string
+func processTypesToStringCallback(schema xsd.Schema, t xsd.Type) xsd.Type {
+	switch t := t.(type) {
+	case *xsd.SimpleType:
+		switch t.Base {
+		case xsd.Double, xsd.Float, xsd.Decimal, xsd.Integer, xsd.Int, xsd.Long, xsd.Short, xsd.Byte, xsd.Boolean, xsd.UnsignedInt:
+			t.Base = xsd.String
+		}
+		return t
+
+	case *xsd.ComplexType:
+		for i, element := range t.Elements {
+
+			for _, attr := range element.Attr {
+				name := fmt.Sprintf("%s_%s_%s", t.Name.Local, element.Name.Local, attr.Name.Local)
+				if attr.Name.Local == "fixed" {
+					QBAS_API_FIXED_VALUES[name] = attr.Value
+				}
+			}
+
+			switch element.Type {
+			case xsd.Double, xsd.Float, xsd.Decimal, xsd.Integer, xsd.Int, xsd.Long, xsd.Short, xsd.Byte, xsd.Boolean, xsd.UnsignedInt:
+				t.Elements[i].Type = xsd.String
+			}
+		}
+
+		switch t.Base {
+		case xsd.Double, xsd.Float, xsd.Decimal, xsd.Integer, xsd.Int, xsd.Long, xsd.Short, xsd.Byte, xsd.Boolean, xsd.UnsignedInt:
+			t.Base = xsd.String
+		}
+		return t
+
+	default:
+		fmt.Println("Unknown type:", t)
 	}
 	return t
 }
