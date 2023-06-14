@@ -16,11 +16,13 @@ replace internal/commandline v0.0.0 => ./internal/commandline
 
 require (
 	aqwari.net/xml v0.0.0-20210331023308-d9421b293817
+	github.com/alexflint/go-arg v1.4.3
 	xsd v0.0.0
 	xsdgen v0.0.0
 )
 
 require (
+	github.com/alexflint/go-scalar v1.1.0 // indirect
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/net v0.0.0-20211108170745-6635138e15ea // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect

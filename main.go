@@ -9,14 +9,24 @@ import (
 	"strings"
 	"xsd"
 	"xsdgen"
+
+	"github.com/alexflint/go-arg"
 )
 
-var OUTPUT_FILE_NAME string = "qbas_schema.go"
+const OUTPUT_FILE_NAME string = "qbas_schema.go"
+
 var QBAS_API_FIXED_VALUES map[string]string
-var PACKAGE_NAMES []string = []string{
+var PACKAGE_NAMES [3]string = [3]string{
 	"analysisSchema",
 	"elisaSchema",
 	"rpCombinationSchema",
+}
+
+var args struct {
+	SchemaPath  string `arg:"positional,required"`
+	OutputPath  string `arg:"positional,required"`
+	PackageName string `arg:"positional,required"`
+	AllStrings  bool   `arg:"--all-strings" help:"turn all base types into string`
 }
 
 func IsValidPackageName(packageName string) bool {
@@ -29,20 +39,19 @@ func IsValidPackageName(packageName string) bool {
 }
 
 func main() {
-	if len(os.Args) != 4 {
-		fmt.Println("Exactly 3 arguments are needed.")
-		fmt.Println("\nExample: go run main.go path/to/schema output/path packageName")
-		fmt.Println("'packageName' as to be one in", PACKAGE_NAMES)
-		fmt.Println()
-		os.Exit(0)
+	arg.MustParse(&args)
+
+	schemaPath := args.SchemaPath
+	outputPaht := args.OutputPath
+	packageName := args.PackageName
+	if !IsValidPackageName(packageName) {
+		fmt.Println("Error: unknown package name:", packageName)
+		os.Exit(1)
 	}
 
-	schemaPath := os.Args[1]
-	outputPaht := os.Args[2]
-	packageName := os.Args[3]
-	if !IsValidPackageName(packageName) {
-		fmt.Println("Error: unknown package name: ", packageName)
-		os.Exit(1)
+	callback := processTypesCallback
+	if args.AllStrings {
+		callback = processTypesToStringCallback
 	}
 
 	// generate a new map
@@ -50,7 +59,8 @@ func main() {
 
 	files, err := ioutil.ReadDir(schemaPath)
 	if err != nil {
-		fmt.Fprint(os.Stderr, err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	fileNames := []string{}
@@ -98,7 +108,7 @@ func main() {
 		xsdgen.PackageName(packageName),
 		xsdgen.OptionalAsNillable(true),
 		xsdgen.IncludeNameSpaceInTags(false),
-		xsdgen.ProcessTypes(processTypesToStringCallback),
+		xsdgen.ProcessTypes(callback),
 		xsdgen.StringAsInnerXML(map[string]bool{
 			"content": true,
 			"name":    true,
